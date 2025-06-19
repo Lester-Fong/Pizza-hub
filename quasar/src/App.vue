@@ -12,7 +12,7 @@ import { onMounted, ref } from 'vue'
 import { useQuasar } from 'quasar'
 import { getUser } from 'src/boot/axios'
 const $q = useQuasar()
-const is_calling_api = ref(true)
+const is_calling_api = ref(false)
 
 const user = ref(null)
 

@@ -21,9 +21,9 @@ class UserService
         $messages = Config::get('Constants.MESSAGES');
 
         $this->user_model->create([
-            'name' => $data->input('firstname') . ' ' . $data->input('lastname'),
-            'email' => $data->input('email'),
-            'password' => Hash::make($data->input('password')),
+            'name' => $data['firstname'] . ' ' . $data['lastname'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
         ]);
 
         // ====== can send email verification here if needed ======= //
@@ -48,7 +48,6 @@ class UserService
             'success' => true,
             'message' => $messages['SUCCESS_LOGIN'],
             'token' => $token,
-            'user' => $user,
         ], 200);
     }
 

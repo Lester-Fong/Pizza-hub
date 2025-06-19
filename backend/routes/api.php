@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderDetailsController;
+use App\Http\Controllers\PizzaTypeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PizzaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,11 +22,18 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-
+// Authentication Routes
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/logout', [UserController::class, 'logout']);
+    Route::post('/logout', [UserController::class, 'logout']); // Changed to POST for security
+    Route::get('/import-status/{jobId}', [OrderController::class, 'importStatus']); // Added status endpoint
+
+    // Main Functionality Routes
+    Route::post('/import-pizza', [PizzaController::class, 'importPizza']);
+    Route::post('/import-pizza-types', [PizzaTypeController::class, 'importPizzaTypes']);
+    Route::post('/import-orders', [OrderController::class, 'importOrders']);
+    Route::post('/import-order-details', [OrderDetailsController::class, 'importOrderDetails']);
 });

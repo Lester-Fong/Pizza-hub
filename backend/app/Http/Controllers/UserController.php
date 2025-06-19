@@ -44,4 +44,14 @@ class UserController extends Controller
             return response()->json(['error' => true, 'message' => 'An error occurred'], 500);
         }
     }
+
+    public function profile(Request $request)
+    {
+        try {
+            return auth()->user();
+        } catch (\Exception $e) {
+            Log::error('Profile retrieval error: ' . $e->getMessage());
+            return response()->json(['error' => true, 'message' => 'An error occurred'], 500);
+        }
+    }
 }

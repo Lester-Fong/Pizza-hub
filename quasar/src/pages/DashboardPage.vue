@@ -17,7 +17,23 @@
               <q-card class="bg-white text-black shadow-2 rounded-borders">
                 <q-card-section class="text-center">
                   <div class="text-h6">Total Orders</div>
-                  <div class="text-h4">5004</div>
+                  <div class="text-h4">{{ total_orders }}</div>
+                </q-card-section>
+              </q-card>
+            </div>
+            <div class="col-3">
+              <q-card class="bg-white text-black shadow-2 rounded-borders">
+                <q-card-section class="text-center">
+                  <div class="text-h6">Total Pizza</div>
+                  <div class="text-h4">{{ total_pizzas }}</div>
+                </q-card-section>
+              </q-card>
+            </div>
+            <div class="col-3">
+              <q-card class="bg-white text-black shadow-2 rounded-borders">
+                <q-card-section class="text-center">
+                  <div class="text-h6">Total Pizza Types</div>
+                  <div class="text-h4">{{ total_pizza_types }}</div>
                 </q-card-section>
               </q-card>
             </div>
@@ -25,23 +41,7 @@
               <q-card class="bg-white text-black shadow-2 rounded-borders">
                 <q-card-section class="text-center">
                   <div class="text-h6">Total Sales</div>
-                  <div class="text-h4">4012</div>
-                </q-card-section>
-              </q-card>
-            </div>
-            <div class="col-3">
-              <q-card class="bg-white text-black shadow-2 rounded-borders">
-                <q-card-section class="text-center">
-                  <div class="text-h6">Total Orders</div>
-                  <div class="text-h4">5004</div>
-                </q-card-section>
-              </q-card>
-            </div>
-            <div class="col-3">
-              <q-card class="bg-white text-black shadow-2 rounded-borders">
-                <q-card-section class="text-center">
-                  <div class="text-h6">Total Orders</div>
-                  <div class="text-h4">5004</div>
+                  <div class="text-h4">${{ total_sales.toFixed(2) }}</div>
                 </q-card-section>
               </q-card>
             </div>
@@ -78,7 +78,7 @@
               <div class="text-h6">Daily Sales Trend</div>
             </q-card-section>
             <q-card-section>
-              <Chart v-if="dailySalesData" :data="dailySalesData" :options="chartOptions" type="line" />
+              <Chart v-if="dailySalesData" :data="dailySalesData" :options="chartOptions" style="height: 350px" type="line" />
             </q-card-section>
           </q-card>
         </q-card-section>
@@ -105,14 +105,16 @@ const pizza_arr = ref([])
 const pizza_types_arr = ref([])
 const orders_arr = ref([])
 const order_details_arr = ref([])
+const total_pizzas = ref(0)
+const total_pizza_types = ref(0)
+const total_orders = ref(0)
+const total_sales = ref(0)
 const props = defineProps({
   user: {
     type: Object,
     default: () => ({}),
   },
 })
-
-console.log('DashboardPage props:', props)
 
 onMounted(async () => {
   try {
@@ -127,6 +129,9 @@ onMounted(async () => {
     isEmptyDB.value = !(pizza_arr.value.length > 0 && pizza_types_arr.value.length > 0 && orders_arr.value.length > 0 && order_details_arr.value.length > 0)
     if (!isEmptyDB.value) {
       await onPopulateDashboardData()
+      total_pizzas.value = pizza_arr.value.length
+      total_pizza_types.value = pizza_types_arr.value.length
+      total_orders.value = orders_arr.value.length
     }
     is_calling_api.value = false
   } catch (error) {
@@ -140,6 +145,7 @@ const onPopulateDashboardData = async () => {
   const response = await getSummaryData()
   const { total_orders, total_revenue, top_pizzas } = response
 
+  total_sales.value = total_revenue || 0
   revenueOrdersData.value = {
     labels: ['Revenue', 'Orders'],
     datasets: [{ data: [total_revenue || 0, total_orders || 0], backgroundColor: ['#FF6384', '#36A2EB'] }],

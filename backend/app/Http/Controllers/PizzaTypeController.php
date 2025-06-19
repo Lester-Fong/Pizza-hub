@@ -17,6 +17,17 @@ class PizzaTypeController extends Controller
         $this->pizzaTypeService = $pizzaTypeService;
     }
 
+    public function showPizzaTypes()
+    {
+        try {
+            $pizzaTypes = PizzaType::all();
+            return response()->json($pizzaTypes);
+        } catch (\Exception $e) {
+            Log::error('Failed to retrieve pizza types: ' . $e->getMessage(), ['exception' => $e->getTraceAsString()]);
+            return response()->json(['error' => 'Failed to retrieve pizza types'], 500);
+        }
+    }
+
     public function importPizzaTypes(Request $request)
     {
         $request->validate([

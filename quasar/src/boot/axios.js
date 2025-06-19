@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { LocalStorage } from 'quasar'
 axios.defaults.withCredentials = true
 axios.defaults.withXSRFToken = true
 
@@ -30,4 +31,46 @@ const loginUser = async (credentials) => {
   return response.data
 }
 
-export { registerUser, loginUser }
+const handlePromiseFiles = async (importFiles) => {
+  const promises = importFiles.map(({ file, endpoint }) => {
+    if (!file) throw new Error(`No file selected for ${endpoint}`)
+    const formData = new FormData()
+    formData.append('csv_file', file) // Append file as 'csv_file'
+    return $user_request.post(endpoint, formData, {
+      headers: {
+        Authorization: `Bearer ${LocalStorage.getItem('access_token')}`,
+        'Content-Type': 'multipart/form-data', // Explicitly set content type
+      },
+    })
+  })
+  const responses = await Promise.all(promises)
+  return responses.map((response) => response.data)
+}
+
+// Check if (pizza, pizza type, orders, order details) tables are empty
+const getDashboardData = async () => {
+  const accessToken = LocalStorage.getItem('access_token')
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  }
+  const endpoints = ['/api/pizza', '/api/pizza-types', '/api/orders', '/api/order-details']
+  const promises = endpoints.map((endpoint) => $user_request.get(endpoint, { headers }))
+  const responses = await Promise.all(promises)
+  return responses.map((response) => response.data)
+}
+
+const getSummaryData = async () => {
+  const response = await axios.get('/api/sales-summary', {
+    headers: { Authorization: `Bearer ${LocalStorage.getItem('access_token')}` },
+  })
+  return response.data
+}
+
+const getTrendResponse = async () => {
+  const response = await axios.get('/api/daily-sales-trend', {
+    headers: { Authorization: `Bearer ${LocalStorage.getItem('access_token')}` },
+  })
+  return response.data
+}
+
+export { registerUser, loginUser, handlePromiseFiles, getDashboardData, getSummaryData, getTrendResponse }

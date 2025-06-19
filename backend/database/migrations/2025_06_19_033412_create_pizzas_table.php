@@ -9,10 +9,10 @@ return new class extends Migration {
     {
         Schema::create('pizzas', function (Blueprint $table) {
             $table->id();
-            $table->string('pizza_id')->unique();
-            $table->string('pizza_type_id');
-            $table->string('size');
-            $table->float('price');
+            $table->string('pizza_id')->unique()->nullable();
+            $table->string('pizza_type_id')->nullable();
+            $table->string('size')->nullable();
+            $table->float('price')->nullable();
             $table->timestamps();
 
             $table->foreign('pizza_type_id')->references('pizza_type_id')->on('pizza_types')->onDelete('restrict');

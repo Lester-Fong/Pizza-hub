@@ -9,6 +9,7 @@ return new class extends Migration {
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->integer('order_id')->unique();
             $table->date('date');
             $table->time('time');
             $table->timestamps();

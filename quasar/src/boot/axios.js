@@ -31,6 +31,13 @@ const loginUser = async (credentials) => {
   return response.data
 }
 
+const getUser = async () => {
+  const response = await $user_request.get('/api/profile', {
+    headers: { Authorization: `Bearer ${LocalStorage.getItem('access_token')}` },
+  })
+  return response.data
+}
+
 const handlePromiseFiles = async (importFiles) => {
   const promises = importFiles.map(({ file, endpoint }) => {
     if (!file) throw new Error(`No file selected for ${endpoint}`)
@@ -73,4 +80,4 @@ const getTrendResponse = async () => {
   return response.data
 }
 
-export { registerUser, loginUser, handlePromiseFiles, getDashboardData, getSummaryData, getTrendResponse }
+export { registerUser, loginUser, handlePromiseFiles, getDashboardData, getSummaryData, getTrendResponse, getUser }

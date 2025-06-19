@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderDetailsController;
 use App\Http\Controllers\PizzaTypeController;
@@ -36,4 +37,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/import-pizza-types', [PizzaTypeController::class, 'importPizzaTypes']);
     Route::post('/import-orders', [OrderController::class, 'importOrders']);
     Route::post('/import-order-details', [OrderDetailsController::class, 'importOrderDetails']);
+
+
+    Route::get('/pizza', [PizzaController::class, 'showPizza']);
+    Route::get('/pizza-types', [PizzaTypeController::class, 'showPizzaTypes']);
+    Route::get('/orders', [OrderController::class, 'showOrders']);
+    Route::get('/order-details', [OrderDetailsController::class, 'showOrderDetails']);
+
+    Route::get('/sales-summary', [DashboardController::class, 'salesSummary']);
+    Route::get('/daily-sales-trend', [DashboardController::class, 'dailySalesTrend']);
 });

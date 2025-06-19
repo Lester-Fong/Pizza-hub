@@ -2,19 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class OrderDetails extends Model
 {
-    use HasFactory;
-
     protected $table = 'order_details';
     protected $primaryKey = 'id';
-    protected $fillable = [
-        'order_details_id',
-        'order_id',
-        'pizza_id',
-        'quantity',
-    ];
+    public $timestamps = true;
+
+    public function order()
+    {
+        return $this->belongsTo(Orders::class, 'order_id', 'order_id');
+    }
+
+    public function pizza()
+    {
+        return $this->belongsTo(Pizza::class, 'pizza_id', 'pizza_id');
+    }
 }

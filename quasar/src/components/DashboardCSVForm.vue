@@ -123,7 +123,7 @@ const handleClearFiles = () => {
 </script>
 
 
-<style scope>
+<style>
 .q-field__label {
   font-family: 'Montserrat', sans-serif;
   font-weight: 500;

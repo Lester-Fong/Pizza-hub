@@ -53,9 +53,11 @@ class UserService
     }
 
 
-    public function logoutUser($request)
+    public function logoutUser()
     {
         $messages = Config::get('Constants.MESSAGES');
+        $user = auth()->user();
+        Log::debug(print_r($user, true));
         if ($user) {
             $user->tokens()->delete();
             return response()->json([

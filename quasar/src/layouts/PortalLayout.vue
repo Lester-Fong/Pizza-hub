@@ -27,13 +27,14 @@
       </q-drawer>
 
       <q-page-container>
-        <router-view />
+        <router-view :user="props.user" />
       </q-page-container>
     </q-layout>
   </div>
 </template>
-<script>
+<script setup>
 import { ref } from 'vue'
+const drawer = ref(false)
 
 const menuList = [
   {
@@ -43,12 +44,10 @@ const menuList = [
   },
 ]
 
-export default {
-  setup() {
-    return {
-      drawer: ref(false),
-      menuList,
-    }
+let props = defineProps({
+  user: {
+    type: Object,
+    default: () => ({}),
   },
-}
+})
 </script>

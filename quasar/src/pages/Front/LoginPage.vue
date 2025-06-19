@@ -1,6 +1,8 @@
 <template>
   <q-page class="flex flex-center fit auth">
-    <div v-if="is_calling_api" class="app-loader"></div>
+    <div v-if="is_calling_api" class="app-loader">
+      <q-spinner-hourglass color="purple" size="5em" />
+    </div>
     <q-card class="app-card-glass absolute-center text-black w-30 q-pa-md h-60 flex column justify-between">
       <q-card-section class="text-h6 text-center"> Login </q-card-section>
 

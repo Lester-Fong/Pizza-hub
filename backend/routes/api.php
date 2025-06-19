@@ -46,4 +46,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/sales-summary', [DashboardController::class, 'salesSummary']);
     Route::get('/daily-sales-trend', [DashboardController::class, 'dailySalesTrend']);
+
+    Route::get('/profile', [UserController::class, 'profile']);
 });

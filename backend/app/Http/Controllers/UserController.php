@@ -35,10 +35,10 @@ class UserController extends Controller
         }
     }
 
-    public function logout(Request $request, UserService $user_service)
+    public function logout(UserService $user_service)
     {
         try {
-            return $user_service->logoutUser($request);
+            return $user_service->logoutUser();
         } catch (\Exception $e) {
             Log::error('Logout error: ' . $e->getMessage());
             return response()->json(['error' => true, 'message' => 'An error occurred'], 500);

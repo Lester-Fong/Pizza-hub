@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OrderDetails;
 use App\Services\OrderDetailsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,6 +15,17 @@ class OrderDetailsController extends Controller
     public function __construct(OrderDetailsService $orderDetailsService)
     {
         $this->order_details_service = $orderDetailsService;
+    }
+
+    public function showOrderDetails()
+    {
+        try {
+            $orderDetails = OrderDetails::all();
+            return response()->json($orderDetails);
+        } catch (\Exception $e) {
+            Log::error('Failed to retrieve order details: ' . $e->getMessage(), ['exception' => $e->getTraceAsString()]);
+            return response()->json(['error' => 'Failed to retrieve order details'], 500);
+        }
     }
 
     public function importOrderDetails(Request $request)

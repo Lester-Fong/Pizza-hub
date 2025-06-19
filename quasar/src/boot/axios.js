@@ -80,4 +80,20 @@ const getTrendResponse = async () => {
   return response.data
 }
 
-export { registerUser, loginUser, handlePromiseFiles, getDashboardData, getSummaryData, getTrendResponse, getUser }
+const handleLogoutProcess = async () => {
+  const response = await $user_request.post(
+    '/api/logout',
+    {},
+    {
+      headers: { Authorization: `Bearer ${LocalStorage.getItem('access_token')}` },
+    },
+  )
+  if (response.status === 200) {
+    LocalStorage.remove('access_token')
+    return true
+  } else {
+    throw new Error('Logout failed')
+  }
+}
+
+export { registerUser, loginUser, handlePromiseFiles, getDashboardData, getSummaryData, getTrendResponse, getUser, handleLogoutProcess }

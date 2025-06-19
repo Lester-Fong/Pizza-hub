@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\OrdersService;
 use Illuminate\Http\Request;
 use Log;
-use App\Jobs\ImportOrdersJob;
-use Illuminate\Support\Facades\Storage;
+use App\Models\Orders;
 use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
@@ -16,6 +15,17 @@ class OrderController extends Controller
     public function __construct(OrdersService $ordersService)
     {
         $this->ordersService = $ordersService;
+    }
+
+    public function showOrders()
+    {
+        try {
+            $orders = Orders::all();
+            return response()->json($orders);
+        } catch (\Exception $e) {
+            Log::error('Failed to retrieve orders: ' . $e->getMessage(), ['exception' => $e->getTraceAsString()]);
+            return response()->json(['error' => 'Failed to retrieve orders'], 500);
+        }
     }
 
     public function importOrders(Request $request)

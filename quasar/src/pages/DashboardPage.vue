@@ -5,38 +5,82 @@
   <div v-else>
     <DashboardCSVForm v-if="isEmptyDB" @setIsEmptyDB="setIsEmptyDB" />
 
-    <div v-else class="q-pa-md">
-      <h2 class="text-center">Dashboard</h2>
-      <p class="text-center q-mb-md">View your sales data</p>
-
-      <div class="row justify-between mb-2 gap-2 q-col-gutter-x-md">
-        <!-- Total Revenue vs Orders (Doughnut Chart) -->
-        <q-card class="q-mb-md col-12 col-md-6">
-          <q-card-section>
-            <div class="text-h6">Revenue vs Orders</div>
-          </q-card-section>
-          <q-card-section>
-            <Chart v-if="revenueOrdersData" :data="revenueOrdersData" :options="chartOptions" type="doughnut" />
-          </q-card-section>
-        </q-card>
-        <!-- Top 5 Pizzas (Bar Chart) -->
-        <q-card class="q-mb-md col-12 col-md-6">
-          <q-card-section>
-            <div class="text-h6">Top 5 Pizzas by Quantity</div>
-          </q-card-section>
-          <q-card-section>
-            <Chart v-if="topPizzasData" :data="topPizzasData" :options="chartOptions" style="height: 310px" type="bar" />
-          </q-card-section>
-        </q-card>
-      </div>
-
-      <!-- Daily Sales Trend (Line Chart) -->
-      <q-card>
-        <q-card-section>
-          <div class="text-h6">Daily Sales Trend</div>
+    <div v-else class="q-pa-md min-vh-92">
+      <q-card class="bg-teal-6 shadow-2 rounded-borders h-100">
+        <q-card-section class="text-white m-0">
+          <div class="text-weight-light text-subtitle1">Hi {{ props?.user?.name }}, Welcome! 👋</div>
+          <div class="text-h5">Your Dashboard Today</div>
         </q-card-section>
         <q-card-section>
-          <Chart v-if="dailySalesData" :data="dailySalesData" :options="chartOptions" type="line" />
+          <div class="row justify-between mb-2 gap-2 q-col-gutter-x-md">
+            <div class="col-3">
+              <q-card class="bg-white text-black shadow-2 rounded-borders">
+                <q-card-section class="text-center">
+                  <div class="text-h6">Total Orders</div>
+                  <div class="text-h4">5004</div>
+                </q-card-section>
+              </q-card>
+            </div>
+            <div class="col-3">
+              <q-card class="bg-white text-black shadow-2 rounded-borders">
+                <q-card-section class="text-center">
+                  <div class="text-h6">Total Sales</div>
+                  <div class="text-h4">4012</div>
+                </q-card-section>
+              </q-card>
+            </div>
+            <div class="col-3">
+              <q-card class="bg-white text-black shadow-2 rounded-borders">
+                <q-card-section class="text-center">
+                  <div class="text-h6">Total Orders</div>
+                  <div class="text-h4">5004</div>
+                </q-card-section>
+              </q-card>
+            </div>
+            <div class="col-3">
+              <q-card class="bg-white text-black shadow-2 rounded-borders">
+                <q-card-section class="text-center">
+                  <div class="text-h6">Total Orders</div>
+                  <div class="text-h4">5004</div>
+                </q-card-section>
+              </q-card>
+            </div>
+          </div>
+
+          <div class="row justify-between mb-2 gap-2 q-col-gutter-x-md">
+            <!-- Total Revenue vs Orders (Doughnut Chart) -->
+            <div class="col-12 col-md-6">
+              <q-card class="h-100">
+                <q-card-section>
+                  <div class="text-h6">Revenue vs Orders</div>
+                </q-card-section>
+                <q-card-section>
+                  <Chart v-if="revenueOrdersData" :data="revenueOrdersData" :options="chartOptions" type="doughnut" />
+                </q-card-section>
+              </q-card>
+            </div>
+            <!-- Top 5 Pizzas (Bar Chart) -->
+            <div class="col-12 col-md-6">
+              <q-card class="">
+                <q-card-section>
+                  <div class="text-h6">Top 5 Pizzas by Quantity</div>
+                </q-card-section>
+                <q-card-section>
+                  <Chart v-if="topPizzasData" :data="topPizzasData" :options="chartOptions" style="height: 310px" type="bar" />
+                </q-card-section>
+              </q-card>
+            </div>
+          </div>
+
+          <!-- Daily Sales Trend (Line Chart) -->
+          <q-card>
+            <q-card-section>
+              <div class="text-h6">Daily Sales Trend</div>
+            </q-card-section>
+            <q-card-section>
+              <Chart v-if="dailySalesData" :data="dailySalesData" :options="chartOptions" type="line" />
+            </q-card-section>
+          </q-card>
         </q-card-section>
       </q-card>
     </div>
@@ -61,11 +105,20 @@ const pizza_arr = ref([])
 const pizza_types_arr = ref([])
 const orders_arr = ref([])
 const order_details_arr = ref([])
+const props = defineProps({
+  user: {
+    type: Object,
+    default: () => ({}),
+  },
+})
+
+console.log('DashboardPage props:', props)
 
 onMounted(async () => {
   try {
     // Check if the database is empty
     const response = await getDashboardData()
+
     pizza_arr.value = response[0]
     pizza_types_arr.value = response[1]
     orders_arr.value = response[2]

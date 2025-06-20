@@ -36,6 +36,10 @@
             padding: 10px;
             width: 100%;
         }
+
+        &>div>div>div>input {
+            color: $grey;
+        }
     }
 
     &-button {

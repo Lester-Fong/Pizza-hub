@@ -11,7 +11,6 @@ const $user_request = axios.create({
 })
 
 const registerUser = async (credentials) => {
-  // Use relative path to enable proxy
   const response = await $user_request.post('/api/register', credentials)
   return response.data
 }
@@ -28,6 +27,7 @@ const loginUser = async (credentials) => {
   }
 
   const response = await $user_request.post('/api/login', creds)
+
   return response.data
 }
 

@@ -103,9 +103,11 @@ const handleAllImportProcess = async () => {
     if (pizza || pizza_type || orders || order_details) {
       $q.notify({ message: 'Import successful!', color: 'positive' })
       handleClearFiles()
+      window.location.reload() // Reload the page to reflect changes
       is_calling_api.value = false
       emit('setIsEmptyDB', false) // Notify parent component that DB is no longer empty
     } else {
+      is_calling_api.value = false
       $q.notify({ message: 'No data imported. Please try again.', color: 'negative' })
     }
   } catch (error) {

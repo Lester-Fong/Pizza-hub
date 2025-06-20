@@ -69,6 +69,20 @@ const handleErrorResponse = (errorData) => {
   } else {
     errors.password = ''
   }
+
+  if (errorData.message) {
+    $q.dialog({
+      title: 'Error',
+      message: errorData.message,
+      ok: true,
+    })
+  } else {
+    $q.dialog({
+      title: 'Error',
+      message: 'An unexpected error occurred. Please try again later.',
+      ok: true,
+    })
+  }
 }
 
 const clearErrorsAndFields = () => {
